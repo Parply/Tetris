@@ -6,11 +6,15 @@ import numpy as np
 
 class shapes():
     TYPES = ['o','i','s','z','l','j','t']
-    def __init__(self,state=None):
+    def __init__(self,state=None,held=None):
         self.state = state
+        self.held = held
         if self.state is None:
             self.state = TYPES[np.random.randint(0,len(TYPES))]
+        if self.held is None:
+            self.held = TYPES[np.random.randint(0,len(TYPES))]
         self.shape=self.create(self.state)
+        self.held=self.create(self.held)
     @staticmethod
     def otype():
         return [['O','O'],['O','O']]
@@ -35,6 +39,11 @@ class shapes():
     @staticmethod
     def create(type):
         return getattr(shapes, f"{type}type")()
+    def switch(self):
+        shape = self.shape
+        held = self.held
+        self.shape = held
+        self.held = shape
     def height(self):
         return len(self.shape)
     def width(self):
